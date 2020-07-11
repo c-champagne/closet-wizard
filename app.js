@@ -39,7 +39,7 @@ passport.use(new GoogleStrategy({
    
    
    passport.serializeUser((user, done) => {
-       //console.log(user);
+       console.log(user);
        let localUser = [user]
        done(null, user[0].id);
    });
@@ -94,14 +94,18 @@ app.listen(PORT, function(){
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
+        console.log("Yes, checkAuthenticated")
         return next()
     }
+    console.log("No, checkAuthenticated")
     res.redirect('/')
 }
 
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
+        console.log("Yes, checkNotAuth")
        return res.redirect('/closet')
     }
+    console.log("No, checkNotAuth")
     next()
 }
