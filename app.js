@@ -66,14 +66,14 @@ app.get('/', (req,res) => {
 })
 
 //***********Google log-in route***********
-app.get('/auth/google', checkNotAuthenticated,passport.authenticate('google', {
+app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
     }
     
 ));
 
 //Google callback URL
-app.get('/auth/google/callback', checkNotAuthenticated, 
+app.get('/auth/google/callback', 
 passport.authenticate('google', {failureRedirect: '/'}),
     (req, res) => {
         console.log(req.body)
@@ -82,7 +82,7 @@ passport.authenticate('google', {failureRedirect: '/'}),
 )
 //***********end Google routes***********
 
-app.get('/closet', checkAuthenticated, function(req, res) {
+app.get('/closet', function(req, res) {
     res.render('closet', {
         email: req.user.email           
     })
