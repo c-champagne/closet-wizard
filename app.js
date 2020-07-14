@@ -14,7 +14,7 @@ app.set('views', 'views');
 app.use(session({
     resave: true,
     saveUninitialized: true,
-    secret: "ASECRET"
+    secret: process.env.SESS_SECRET
 }));
 
 app.use(bodyParser.urlencoded({extended: true}));
