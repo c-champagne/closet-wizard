@@ -1,15 +1,29 @@
 require ('dotenv').config()
 
 const express = require('express');
-const db = require('./models');
 const app = express();
+const session = require('express-session');
+const db = require('./models');
 PORT = process.env.PORT;
+
+const bodyParser = require('body-parser');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: "ASECRET"
+}));
+
+app.use(bodyParser.urlencoded({extended: true}));
+
+
 //Passport
 const passport = require('passport');
+
+
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 passport.use(new GoogleStrategy({
@@ -32,11 +46,9 @@ passport.use(new GoogleStrategy({
             })
     } 
    ));
-   
+
    app.use(passport.initialize());
    app.use(passport.session());
-   
-   
    
    passport.serializeUser((user, done) => {
        console.log(user);
@@ -56,6 +68,7 @@ passport.use(new GoogleStrategy({
    });
 
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
 
 
 app.get('/', (req,res) => {
@@ -76,16 +89,37 @@ app.get('/auth/google', passport.authenticate('google', {
 app.get('/auth/google/callback', 
 passport.authenticate('google', {failureRedirect: '/'}),
     (req, res) => {
-        console.log(req.body)
-        return res.redirect("/closet")
-    }
+        console.log("This is the callback " + req.user.id)
+        return res.redirect("/closet")}
 )
 //***********end Google routes***********
 
-app.get('/closet', function(req, res) {
+app.get('/closet', checkAuthenticated, function(req, res) {
+    console.log("In closet" + req.user.firstName)
+    if (req.user.firstName === null) {
+        res.render('newUser')
+    } else {
     res.render('closet', {
-        email: req.user.email           
+        name: req.user.firstName,
+        email: req.user.email,
+        /* email: profile.emails[0].value */         
+    })}
+})
+
+app.get('/newUser', checkAuthenticated, function(req, res) {
+    res.render('newUser', {
+
     })
+})
+
+
+app.post('/submitUser', function (req, res) {
+    console.log(req.body.newName)
+    let name = (req.body.newName)
+    db.user.update(
+        {firstName: name},
+        {where: {id: req.user.id}})
+        .then(() => res.redirect("/closet"))
 })
 
 app.listen(PORT, function(){
