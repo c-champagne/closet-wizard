@@ -102,6 +102,8 @@ app.get('/closet', checkAuthenticated, function(req, res) {
     res.render('closet', {
         name: req.user.firstName,
         email: req.user.email,
+        title: "Click a tab to begin",
+        imgOne: "/images/phShoe.jpg"
         /* email: profile.emails[0].value */         
     })}
 })
@@ -120,6 +122,22 @@ app.post('/submitUser', function (req, res) {
         {firstName: name},
         {where: {id: req.user.id}})
         .then(() => res.redirect("/closet"))
+})
+
+app.get('/closet/clothes', function (req, res) {
+    res.render('closet', {
+        name: req.user.firstName,
+        title: "Clothes",
+        imgOne: "/images/phShirt.jpg"
+    })
+})
+
+app.get('/closet/outfits', function (req, res) {
+    res.render('closet', {
+        name: req.user.firstName,
+        title: "Outfits",
+        imgOne: "/images/phOutfit.jpg"
+    })
 })
 
 app.listen(PORT, function(){

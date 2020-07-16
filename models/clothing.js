@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   clothing.associate = function(models) {
     // associations can be defined here
     clothing.belongsTo(models.user, {foreignKey: 'user_id'})
-    clothing.belongsToMany(model.outfit, {through: 'clothingOutfit', foreignKey: 'clothing_id'})
+    clothing.belongsToMany(models.outfit, {through: 'clothingOutfit', foreignKey: 'clothing_id'})
   };
   return clothing;
 };

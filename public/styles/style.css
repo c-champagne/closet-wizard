@@ -1,0 +1,9 @@
+.homeLogo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.test {
+    color: red;
+}
