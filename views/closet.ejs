@@ -16,17 +16,33 @@
           </div>
         </section>
         <section>
+          <div class="container">
+            <h2 class="subtitle">
+              To get started, try uploading some photos.
+            </h2>
+            <a onclick="client.picker(options).open()" href="#">Upload</a>
+          </div>
+        </section>
+        <section>
             <div class="tabs">
                 <ul>
                   <li class="is-active"><a href="/closet/clothes">Clothes</a></li>
                   <li><a href="/closet/outfits">Outfits</a></li>
-                  <!-- <li><a>Videos</a></li>
-                  <li><a>Documents</a></li> -->
                 </ul>
               </div>
               <div class="container">
                 <%- include('partials/templates/closetContents.ejs') %>
               </div>
         </section>
+        <script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
+        <script>
+        const client = filestack.init('<%=process.env.FILESTACK_APIKEY%>');
+            const options  = {
+        maxFiles: 5,
+        uploadInBackground: false,
+        onOpen: () => console.log("opened!"),
+        onUploadDone: (res) => console.log (res.filesUploaded[0].handle),
+        onFileUploadFailed: () => console.log('failed'),}
+        </script>
       </body>
 </html>

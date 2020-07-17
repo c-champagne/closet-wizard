@@ -4,8 +4,6 @@ const express = require('express');
 const app = express();
 const session = require('express-session');
 const db = require('./models');
-PORT = process.env.PORT;
-
 const bodyParser = require('body-parser');
 
 app.set('view engine', 'ejs');
@@ -22,7 +20,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //Passport
 const passport = require('passport');
-
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -66,19 +63,20 @@ passport.use(new GoogleStrategy({
            return done(e)
        })
    });
+//End Passport
+const client = require('filestack-js').init(process.env.FILESTACK_APIKEY);
+
+
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 
 app.get('/', (req,res) => {
-    //db.user.create({firstName:'Test', lastName:'Test2', email:'test2@mail.com', password: 'testpw2', avatar:'https://avatars.dicebear.com/api/jdenticon/wowzee.svg'})
-    res.render('index.ejs', {
-        name: "Test Name"
-    })
+    res.render('index.ejs')
 })
 
-//***********Google log-in route***********
+//***********Google log-in routes***********
 app.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
     }
@@ -103,17 +101,15 @@ app.get('/closet', checkAuthenticated, function(req, res) {
         name: req.user.firstName,
         email: req.user.email,
         title: "Click a tab to begin",
-        imgOne: "/images/phShoe.jpg"
-        /* email: profile.emails[0].value */         
+        imgOne: "/images/phShoe.jpg",
+        akey: process.env.FILESTACK_APIKEY         
     })}
 })
 
 app.get('/newUser', checkAuthenticated, function(req, res) {
     res.render('newUser', {
-
     })
 })
-
 
 app.post('/submitUser', function (req, res) {
     console.log(req.body.newName)
@@ -140,8 +136,8 @@ app.get('/closet/outfits', function (req, res) {
     })
 })
 
-app.listen(PORT, function(){
-    console.log(`Listening on ${PORT}..`)
+app.listen(process.env.PORT, function(){
+    console.log(`Listening on ${process.env.PORT}..`)
 })
 
 function checkAuthenticated(req, res, next) {
@@ -161,3 +157,4 @@ function checkNotAuthenticated(req, res, next) {
     console.log("No, checkNotAuth")
     next()
 }
+
