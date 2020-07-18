@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     colors: DataTypes.STRING,
     style: DataTypes.STRING,
     season: DataTypes.STRING,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    user_id: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER
   }, {});
   clothing.associate = function(models) {
     // associations can be defined here

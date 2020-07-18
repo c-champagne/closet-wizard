@@ -20,7 +20,32 @@
             <h2 class="subtitle">
               To get started, try uploading some photos.
             </h2>
-            <a onclick="client.picker(options).open()" href="#">Upload</a>
+            <!-- <a onclick="client.picker(options).open()" href="#">Upload</a> -->
+          <section>
+            <div class="box">
+              <form id="pick-form" action="/submitImage" method="POST">
+                <div class="field">
+                  <div class="control">
+                    <button class="button" type="button" id="picker">Pick file</button>
+                    <input type="text" id="fsHandle" name="fsHandle" value= "none">
+                  </div>
+                  <div class="control" id="nameBox">
+                    <label for="clothingName">Item name?</label>
+                    <input type="text" id="clothingName" name="clothingName" value="">
+                  </div>
+                  <div class="control" id="urlBox"></div>
+                </div>
+                <div>
+                  <button class="submitButton" type="submit" formmethod="POST">Add to Closet</button>
+                </div>
+                <!-- <div class="field">
+                  <div class="control">
+                    <input class="button" type="submit" value="Submit">
+                  </div>
+                </div> -->
+              </form>
+            </div>  
+          </section>
           </div>
         </section>
         <section>
@@ -41,8 +66,52 @@
         maxFiles: 5,
         uploadInBackground: false,
         onOpen: () => console.log("opened!"),
-        onUploadDone: (res) => console.log (res.filesUploaded[0].handle),
+        onUploadDone: (res) => {
+           newImage = res.filesUploaded[0].handle;
+          console.log ("This is" + newImage)
+          fileInput.value = newImage
+          console.log ("Value is now " + fileInput.value)
+          /* updateForm(); */
+        }
+        
+        /* console.log (res.filesUploaded[0].handle) */,
         onFileUploadFailed: () => console.log('failed'),}
+
+        const picker = client.picker(options);
+
+// Get references to the DOM elements
+
+const form = document.getElementById('pick-form');
+const fileInput = document.getElementById('fsHandle');
+const btn = document.getElementById('picker');
+const nameBox = document.getElementById('nameBox');
+const urlBox = document.getElementById('urlBox');
+
+// Add our event listeners
+
+btn.addEventListener('click', function (e) {
+  e.preventDefault();
+  picker.open();
+});
+
+/* form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  alert('Submitting: ' + fileInput.value);
+}); */
+
+// Helper to overwrite the field input value
+ function updateForm (result) {
+  const fileData = result.filesUploaded[0];
+  fileInput.value = fileData.url;
+  console.log("Update form says " + fileData)
+} 
+
+
+/* function updateForm (result) {
+  const fileData = result.filesUploaded[0];
+  fileInput.value = fileData.url;
+  console.log("Update form says " + fileData)
+} */
         </script>
       </body>
 </html>

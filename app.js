@@ -65,6 +65,34 @@ passport.use(new GoogleStrategy({
    });
 //End Passport
 const client = require('filestack-js').init(process.env.FILESTACK_APIKEY);
+/* const options = {
+    maxFiles: 5,
+    uploadInBackground: false,
+    onOpen: () => console.log("opened!"),
+    onUploadDone: (res) => console.log (res.filesUploaded[0].handle),
+    onFileUploadFailed: () => console.log('failed'),}
+const picker = client.picker(options); */
+
+/* const form = document.getElementById('pick-form');
+const fileInput = document.getElementById('fileupload');
+const btn = document.getElementById('picker');
+const nameBox = document.getElementById('nameBox');
+const urlBox = document.getElementById('urlBox');
+
+btn.addEventListener('click', function (e) {
+    e.preventDefault();
+    picker.open();
+})
+
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert('Submitting' + fileInput.value);
+});
+
+function updateForm (result) {
+    const fileData = result.filesUploaded[0];
+    fileInput.value = fileData.url;
+} */
 
 
 
@@ -118,6 +146,18 @@ app.post('/submitUser', function (req, res) {
         {firstName: name},
         {where: {id: req.user.id}})
         .then(() => res.redirect("/closet"))
+})
+
+app.post('/submitImage', function (req, res) {
+    console.log('submitted')
+    console.log(req.body)
+    console.log("Here is " + res)
+    let clothingName = (req.body.clothingName)
+    let itemHandle = 'https://www.filestackapi.com/api/file' + (req.body.fsHandle)
+    db.clothing.create({name:clothingName, image:itemHandle, user_id:req.user.id})
+    .then(() => res.redirect("/closet"))
+    console.log("Item handle is " + itemHandle)
+    
 })
 
 app.get('/closet/clothes', function (req, res) {
