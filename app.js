@@ -150,9 +150,13 @@ app.post('/submitUser', function (req, res) {
 
 app.post('/submitImage', function (req, res) {
     console.log('submitted')
+    console.log(req.body)
     let clothingName = (req.body.clothingName)
-    let itemHandle = (req.body.fsHandle)
+    let itemHandle = 'https://www.filestackapi.com/api/file' + (req.body.fsHandle)
+    db.clothing.create({name:clothingName, image:itemHandle})
+    .then(() => res.redirect("/closet"))
     console.log("Item handle is " + itemHandle)
+    
 })
 
 app.get('/closet/clothes', function (req, res) {

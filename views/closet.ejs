@@ -23,20 +23,26 @@
             <!-- <a onclick="client.picker(options).open()" href="#">Upload</a> -->
           <section>
             <div class="box">
-              <form id="pick-form">
+              <form id="pick-form" action="/submitImage" method="POST">
                 <div class="field">
                   <div class="control">
                     <button class="button" type="button" id="picker">Pick file</button>
-                    <input type="hidden" id="fsHandle" value= "none">
+                    <input type="text" id="fsHandle" name="fsHandle" value= "none">
                   </div>
-                  <div class="control" id="nameBox"></div>
+                  <div class="control" id="nameBox">
+                    <label for="clothingName">Item name?</label>
+                    <input type="text" id="clothingName" name="clothingName" value="">
+                  </div>
                   <div class="control" id="urlBox"></div>
                 </div>
-                <div class="field">
+                <div>
+                  <button class="submitButton" type="submit" formmethod="POST">Add to Closet</button>
+                </div>
+                <!-- <div class="field">
                   <div class="control">
                     <input class="button" type="submit" value="Submit">
                   </div>
-                </div>
+                </div> -->
               </form>
             </div>  
           </section>
@@ -88,10 +94,10 @@ btn.addEventListener('click', function (e) {
   picker.open();
 });
 
-form.addEventListener('submit', function (e) {
+/* form.addEventListener('submit', function (e) {
   e.preventDefault();
   alert('Submitting: ' + fileInput.value);
-});
+}); */
 
 // Helper to overwrite the field input value
  function updateForm (result) {
