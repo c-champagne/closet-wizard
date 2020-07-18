@@ -167,6 +167,7 @@ app.post('/submitUser', function (req, res) {
     db.user.update(
         {firstName: name},
         {where: {id: req.user.id}})
+     db.clothing.create({name:"placeholder", user_id:req.user.id})
         .then(() => res.redirect("/closet"))
 })
 
