@@ -11,9 +11,11 @@
         <section>
             <h1><%= title %></h1>
             <div class="container">
-                <figure>
-                    <img src= <%= imgOne %> class="image is-square" />
-                </figure>
+                <% for (i=0; i<imgOne.length; i++) {%>
+                    <figure class="image is-128x128">
+                        <img src=<%= imgOne[i] %>>
+                    </figure>
+                <%}%>
             </div>
         </section>
     </body>

@@ -31,8 +31,8 @@ passport.use(new GoogleStrategy({
        proxy: true 
     },
     function(accessToken, refreshToken, profile, done) {
-       console.log(profile.emails[0].value);
-       console.log(profile.name.givenName);
+       /* console.log(profile.emails[0].value);
+       console.log(profile.name.givenName); */
         db.user.findOrCreate({ 
             where: {email: profile.emails[0].value}})
             .then(user => {
@@ -48,13 +48,13 @@ passport.use(new GoogleStrategy({
    app.use(passport.session());
    
    passport.serializeUser((user, done) => {
-       console.log(user);
+       /* console.log(user); */
        let localUser = [user]
        done(null, user[0].id);
    });
    
    passport.deserializeUser((user, done) => {
-       console.log('The user is ' + user);
+       /* console.log('The user is ' + user); */
        db.user.findByPk(user)
        .then(function(user){
            done(null, user);
@@ -125,13 +125,35 @@ app.get('/closet', checkAuthenticated, function(req, res) {
     if (req.user.firstName === null) {
         res.render('newUser')
     } else {
-    res.render('closet', {
+        db.clothing.findAll({
+            where: {user_id: [req.user.id]}
+        })
+        .then((results) => {
+            console.log(results[0].image)
+            let i;
+            let allImg = [];
+            for (i = 0; i< results.length; i++) {
+                allImg.push(results[i].image)
+            }
+            console.log(allImg)
+            res.render('closet', {
+                name: req.user.firstName,
+                title: "Clothes",
+                imgOne: allImg
+                /* userClothing: "test" */
+            })
+        })
+    
+    
+    
+        /* res.render('closet', {
         name: req.user.firstName,
         email: req.user.email,
         title: "Click a tab to begin",
         imgOne: "/images/phShoe.jpg",
         akey: process.env.FILESTACK_APIKEY         
-    })}
+        }) */
+    }
 })
 
 app.get('/newUser', checkAuthenticated, function(req, res) {
@@ -149,23 +171,37 @@ app.post('/submitUser', function (req, res) {
 })
 
 app.post('/submitImage', function (req, res) {
-    console.log('submitted')
+    /* console.log('submitted')
     console.log(req.body)
-    console.log("Here is " + res)
+    console.log("Here is " + res) */
     let clothingName = (req.body.clothingName)
     let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
     db.clothing.create({name:clothingName, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
-    console.log("Item handle is " + itemHandle)
+    /* console.log("Item handle is " + itemHandle) */
     
 })
 
 app.get('/closet/clothes', function (req, res) {
-    res.render('closet', {
-        name: req.user.firstName,
-        title: "Clothes",
-        imgOne: "/images/phShirt.jpg"
+    db.clothing.findAll({
+        where: {user_id: [req.user.id]}
     })
+    .then((results) => {
+        console.log(results[0].image)
+        let i;
+        let allImg = [];
+        for (i = 0; i< results.length; i++) {
+            allImg.push(results[i].image)
+        }
+        console.log(allImg)
+        res.render('closet', {
+            name: req.user.firstName,
+            title: "Clothes",
+            imgOne: allImg
+            /* userClothing: "test" */
+        })
+    })
+    
 })
 
 app.get('/closet/outfits', function (req, res) {
