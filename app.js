@@ -153,7 +153,7 @@ app.post('/submitImage', function (req, res) {
     console.log(req.body)
     console.log("Here is " + res)
     let clothingName = (req.body.clothingName)
-    let itemHandle = 'https://www.filestackapi.com/api/file' + (req.body.fsHandle)
+    let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
     db.clothing.create({name:clothingName, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
     console.log("Item handle is " + itemHandle)
