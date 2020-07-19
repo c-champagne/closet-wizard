@@ -33,7 +33,17 @@
                     <label for="clothingName">Item name?</label>
                     <input type="text" id="clothingName" name="clothingName" value="">
                   </div>
-                  <div class="control" id="urlBox"></div>
+                  <div class="control" id="detailsBox">
+                    <p>Type of clothing:</p>
+                    <input type="radio" id="clTop" name="clType" value="top">
+                    <label for="clTop">Top</label><br>
+                    <input type="radio" id="clBottom" name="clType" value="bottom">
+                    <label for="clBottom">Bottom</label><br>
+                    <input type="radio" id="clFull" name="clType" value="full">
+                    <label for="clFull">Full body</label><br>
+                    <input type="radio" id="clShoes" name="clType" value="shoes">
+                    <label for="clShoes">Shoes</label><br>
+                  </div>
                 </div>
                 <div>
                   <button class="submitButton" type="submit" formmethod="POST">Add to Closet</button>

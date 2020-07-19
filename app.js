@@ -129,9 +129,10 @@ app.get('/closet', checkAuthenticated, function(req, res) {
             where: {user_id: [req.user.id]}
         })
         .then((results) => {
-            console.log(results[0].image)
+            /* console.log(results) */
             let i;
             let allImg = [];
+            let userClothes = results;
             for (i = 0; i< results.length; i++) {
                 allImg.push(results[i].image)
             }
@@ -139,20 +140,11 @@ app.get('/closet', checkAuthenticated, function(req, res) {
             res.render('closet', {
                 name: req.user.firstName,
                 title: "Clothes",
-                imgOne: allImg
+                imgOne: allImg,
+                clothing: userClothes
                 /* userClothing: "test" */
             })
         })
-    
-    
-    
-        /* res.render('closet', {
-        name: req.user.firstName,
-        email: req.user.email,
-        title: "Click a tab to begin",
-        imgOne: "/images/phShoe.jpg",
-        akey: process.env.FILESTACK_APIKEY         
-        }) */
     }
 })
 
@@ -176,8 +168,9 @@ app.post('/submitImage', function (req, res) {
     console.log(req.body)
     console.log("Here is " + res) */
     let clothingName = (req.body.clothingName)
+    let clType = (req.body.clType)
     let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
-    db.clothing.create({name:clothingName, image:itemHandle, user_id:req.user.id})
+    db.clothing.create({name:clothingName, type:clType, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
     /* console.log("Item handle is " + itemHandle) */
     
@@ -188,17 +181,24 @@ app.get('/closet/clothes', function (req, res) {
         where: {user_id: [req.user.id]}
     })
     .then((results) => {
-        console.log(results[0].image)
         let i;
         let allImg = [];
+        let allName = [];
+        let allTypes = [];
+        let userClothes = results;
         for (i = 0; i< results.length; i++) {
             allImg.push(results[i].image)
+/*             allName.push(results[i].name)
+            allTypes.push(results[i].type) */
         }
-        console.log(allImg)
+        /* console.log(allImg) */
         res.render('closet', {
             name: req.user.firstName,
             title: "Clothes",
-            imgOne: allImg
+            imgOne: allImg,
+            clothing: userClothes
+       /*      clothName: allName,
+            clothType: allTypes */
             /* userClothing: "test" */
         })
     })

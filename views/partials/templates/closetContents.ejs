@@ -10,12 +10,34 @@
     <body>
         <section>
             <h1><%= title %></h1>
-            <div class="container">
-                <% for (i=0; i<imgOne.length; i++) {%>
-                    <figure class="image is-128x128">
-                        <img src=<%= imgOne[i] %>>
-                    </figure>
+                <div class="tile is-ancestor">
+                <% for (i=0; i<clothing.length; i++) {%>
+                    <div class="tile is-parent">
+                            <div class="tile is-child box">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <figure class="image is-4by5">
+                                            <img src=<%= clothing[i].image %> alt="clothing">
+                                        </figure>
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="title"><%= clothing[i].name %></p>
+                                        <div class="content">
+                                            <p class="subtitle">Type:</p>
+                                                <span><%= clothing[i].type %></span>
+                                            <p class="subtitle">Colors:</p>
+                                                <span>Colors here</span>
+                                            <p class="subtitle">Style</p>
+                                                <span>Style here</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>    
                 <%}%>
+            </div> 
             </div>
         </section>
     </body>
