@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include('partials/head.ejs') %> 
+      </head>
+    <body>
+      <%- include('partials/header.ejs') %>
+        <section>
+          <div class="container">
+            <div class="box">
+              <button id="modalBtn">Launch Outfit Creator</button>
+            </div> 
+            <div class="modal" id="outfitModal">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="box">
+                  <form action="/submitOutfit" method="POST">
+                    <h2>Tops</h2>
+                    <% for (i=0; i<clothing.length; i++) {%>
+                        <article class="media">
+                            <figure class="media-left">
+                              <p class="image is-64x64">
+                                <img src=<%= clothing[i].image %> alt="clothing">
+                              </p>
+                            </figure>
+                            <div class="media-content">
+                              <div class="content">
+                                <p>
+                                  <strong><%= clothing[i].name %></strong>
+                                  <br>
+                                  <%= clothing[i].type %>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="media-right">
+                              <label class="checkbox">
+                                  <input type="checkbox" id=<%= clothing[i].name %> name="clothes" value=<%= clothing[i].id%>>
+                                  Pick
+                              </label>
+                            </div>
+                          </article>
+                    <%}%>
+                    <div class="field">
+                        <label class="label">Outfit Name</label>
+                        <div class="control">
+                          <input class="input" type="text" id="outfitName" name="outfitName" value="">
+                        </div>
+                        <p class="help">This is a help text</p>
+                        <button class="button is-primary" type="submit" formmethod="POST">Done</button>
+                      </div>
+                  </form>
+                </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close" id="modalX"></button>
+              </div> 
+          </div>
+        </section>
+        <section>
+            <div class="tabs">
+                <ul>
+                  <li class="is-active"><a href="/closet">Clothes</a></li>
+                  <li><a href="/closet/outfits">Outfits</a></li>
+                </ul>
+              </div>
+              <div class="container">
+                You don't have any outfits yet! Let's make one.
+                
+              </div>
+        </section>
+        <%- include ('partials/footer.ejs') %> 
+        <script>
+            const modal = document.getElementById('outfitModal');
+            const btn = document.getElementById('modalBtn');
+            const modalClose = document.getElementById('modalX');
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+            modalClose.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            var tabList = document.getElementById("clothingTabs")
+            var tabs = tabList.getElementsByClassName("formTab");
+
+            for (let i =0; i <tabs.length; i++) {
+                tabs[i].addEventListener("click", function() {
+                    let current = document.getElementsByClassName("is-active");
+                    current[0].className = current[0].className.replace("is-active", "")
+                    this.className += " is-active";
+                })
+            }
+        </script>
+      </body>
+</html>

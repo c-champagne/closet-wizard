@@ -1,26 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Closet Wizard</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-        <link rel="stylesheet" href="/public/styles/style.css">
+        <%- include('partials/head.ejs') %> 
       </head>
     <body>
-        <section class="section">
-          <div class="container">
-            <h1 class="title">Welcome to your virtual closet, <%=name%>!</h1>
-            <h2 class="subtitle">
-            </h2>
-          </div>
-        </section>
+      <%- include('partials/header.ejs') %>
         <section>
           <div class="container">
-            <h2 class="subtitle">
-              To get started, try uploading some photos.
-            </h2>
-            <!-- <a onclick="client.picker(options).open()" href="#">Upload</a> -->
           <section>
             <div class="box">
               <form id="pick-form" action="/submitImage" method="POST">
@@ -56,7 +42,7 @@
         <section>
             <div class="tabs">
                 <ul>
-                  <li class="is-active"><a href="/closet/clothes">Clothes</a></li>
+                  <li class="is-active"><a href="/closet">Clothes</a></li>
                   <li><a href="/closet/outfits">Outfits</a></li>
                 </ul>
               </div>
@@ -64,6 +50,18 @@
                 <%- include('partials/templates/closetContents.ejs') %>
               </div>
         </section>
+        <%- include ('partials/footer.ejs') %> 
+
+
+
+
+
+
+
+
+
+
+
         <script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
         <script>
         const client = filestack.init('<%=process.env.FILESTACK_APIKEY%>');

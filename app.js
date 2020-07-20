@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 //Passport
 const passport = require('passport');
+const { response } = require('express');
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -176,41 +177,68 @@ app.post('/submitImage', function (req, res) {
     
 })
 
+app.post('/submitOutfit', function (req, res) {
+    console.log('submitted')
+    console.log(req.body)
+    console.log("Here is " + res)
+    let outfitName = (req.body.outfitName)
+    let clothes = (req.body.clothes)
+    db.outfit.create({name:outfitName, user_id:req.user.id})
+    .then((results) => {
+        for (i=0; i<clothes.length; i++) {
+            db.clothingOutfit.create({clothing_id:clothes[i], outfit_id: results.id})
+        }      
+    })
+    .then(() => res.redirect("/closet/outfits"))
+    
+})
+
 app.get('/closet/clothes', function (req, res) {
     db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
     .then((results) => {
-        let i;
-        let allImg = [];
-        let allName = [];
-        let allTypes = [];
         let userClothes = results;
-        for (i = 0; i< results.length; i++) {
-            allImg.push(results[i].image)
-/*             allName.push(results[i].name)
-            allTypes.push(results[i].type) */
-        }
-        /* console.log(allImg) */
         res.render('closet', {
             name: req.user.firstName,
             title: "Clothes",
             imgOne: allImg,
             clothing: userClothes
-       /*      clothName: allName,
-            clothType: allTypes */
-            /* userClothing: "test" */
         })
     })
     
 })
 
 app.get('/closet/outfits', function (req, res) {
-    res.render('closet', {
-        name: req.user.firstName,
-        title: "Outfits",
-        imgOne: "/images/phOutfit.jpg"
+    db.clothing.findAll({
+        where: {user_id: [req.user.id]}
     })
+    .then((results) => {
+        let userClothes = results;
+    db.outfit.findAll({
+        raw: true,
+        where: {user_id: [req.user.id]}
+    })
+    .then((results) => {
+        console.log("Outfits:", results.id)
+        db.clothingOutfit.findAll({
+            raw: true,
+            where: {outfit_id: [results.id]}
+        })
+    .then((results) => {
+        /* console.log("Joins:", results) */
+        db.clothing.findAll({
+            where: {id: [results.clothing_id]}
+        })
+        .then((results) => console.log("Clothing" + results))
+    })
+    })
+        res.render('outfits', {
+            name: req.user.firstName,
+            clothing: userClothes,
+            /* outfits: */
+        }) 
+        })
 })
 
 app.listen(process.env.PORT, function(){
