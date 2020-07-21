@@ -215,6 +215,44 @@ app.get('/closet/clothes', function (req, res) {
     db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
+    .then((results) => {
+        let userClothes = results;
+        db.outfit.findAll({
+            raw: true,
+            where: {user_id: [req.user.id]}
+        })
+        console.log("Outfits:", results.id) 
+        let userOutfits = [];
+        for (i=0; i < results.length; i++) {
+            userOutfits.push(results[i].id)
+        }
+        console.log("IDs", userOutfits) 
+        db.clothingOutfit.findAll({
+            raw: true,
+            where: {
+                outfit_id: {
+                    [Sequelize.Op.in]: userOutfits
+                }
+            }
+        })
+    .then((results) => {
+        console.log("Joins:", results) 
+        db.clothing.findAll({
+            where: {id: [results.clothing_id]}
+        })
+        res.render('outfits', {
+            name: req.user.firstName,
+            clothing: userClothes,
+            outfits:
+        }) 
+        })
+})
+}) */
+
+/* app.get('/closet/outfits', function (req, res) {
+    db.clothing.findAll({
+        where: {user_id: [req.user.id]}
+    })
         .then((results) => {
             let userClothes = results;
         })
@@ -239,13 +277,14 @@ app.get('/closet/outfits', function (req, res) {
         raw: true,
         where: {user_id: [req.user.id]}
     })
-    .then((results) => {
-        console.log("Outfits:", results[0].id) 
+    .then((results) => { 
         let userOutfits = [];
+        /* console.log("OF IDs are", userOutfits) */
+        /* let outfitImages = results.image */
         for (i=0; i < results.length; i++) {
             userOutfits.push(results[i].id)
         }
-        console.log("IDs", userOutfits) 
+        console.log("OF IDs", userOutfits) 
         db.clothingOutfit.findAll({
             raw: true,
             where: {
@@ -255,7 +294,7 @@ app.get('/closet/outfits', function (req, res) {
             }
         })
     .then((results) => {
-         console.log("Joins:", results[0].id) 
+         console.log("Joins:", results) 
         db.clothing.findAll({
             where: {id: [results.clothing_id]}
         })
