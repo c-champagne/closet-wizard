@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //Passport
 const passport = require('passport');
 const { response } = require('express');
+const { Sequelize } = require('sequelize');
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -183,11 +184,12 @@ app.post('/submitOutfit', function (req, res) {
     console.log("Here is " + res)
     let outfitName = (req.body.outfitName)
     let clothes = (req.body.clothes)
-    db.outfit.create({name:outfitName, user_id:req.user.id})
+    db.outfit.create({name:outfitName, user_id:req.user.id, image: clothes.join()})
     .then((results) => {
-        for (i=0; i<clothes.length; i++) {
+        console.log((results))
+        /* for (i=0; i<clothes.length; i++) {
             db.clothingOutfit.create({clothing_id:clothes[i], outfit_id: results.id})
-        }      
+        } */      
     })
     .then(() => res.redirect("/closet/outfits"))
     
@@ -209,6 +211,24 @@ app.get('/closet/clothes', function (req, res) {
     
 })
 
+/* app.get('/closet/outfits', function (req, res) {
+    db.clothing.findAll({
+        where: {user_id: [req.user.id]}
+    })
+        .then((results) => {
+            let userClothes = results;
+        })
+    db.outfit.findAll({
+        where: {user_id: [req.user.id]}
+    })
+    .then((results) => {
+        res.render('outfits', {
+            name: req.user.firstName,
+            clothing: userClothes
+        })
+    })
+}) */
+
 app.get('/closet/outfits', function (req, res) {
     db.clothing.findAll({
         where: {user_id: [req.user.id]}
@@ -220,13 +240,22 @@ app.get('/closet/outfits', function (req, res) {
         where: {user_id: [req.user.id]}
     })
     .then((results) => {
-        console.log("Outfits:", results.id)
+        console.log("Outfits:", results[0].id) 
+        let userOutfits = [];
+        for (i=0; i < results.length; i++) {
+            userOutfits.push(results[i].id)
+        }
+        console.log("IDs", userOutfits) 
         db.clothingOutfit.findAll({
             raw: true,
-            where: {outfit_id: [results.id]}
+            where: {
+                outfit_id: {
+                    [Sequelize.Op.in]: userOutfits
+                }
+            }
         })
     .then((results) => {
-        /* console.log("Joins:", results) */
+         console.log("Joins:", results[0].id) 
         db.clothing.findAll({
             where: {id: [results.clothing_id]}
         })
@@ -236,7 +265,6 @@ app.get('/closet/outfits', function (req, res) {
         res.render('outfits', {
             name: req.user.firstName,
             clothing: userClothes,
-            /* outfits: */
         }) 
         })
 })
