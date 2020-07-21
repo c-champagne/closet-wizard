@@ -295,10 +295,33 @@ app.get('/closet/outfits', function (req, res) {
         })
     .then((results) => {
          console.log("Joins:", results) 
-        db.clothing.findAll({
+         db.outfit.findAll({
+             include: [{
+                 model: db.clothing,
+                 attributes: ['id', 'name', 'image'],
+                 where: {user_id: [req.user.id]}
+                 /* through: {
+                     where: {clothing_id: 8}
+                 } */
+             }]
+         })
+         /* db.clothing.findAll({
+             include: [{
+                 model: db.outfit,
+                 attributes: ['id', 'name', 'image'],
+                 through: {
+                     where:{id: req.user.id}
+                 }
+             }]
+         }) */
+        /* db.clothing.findAll({
             where: {id: [results.clothing_id]}
-        })
-        .then((results) => console.log("Clothing" + results))
+        }) */
+        .then((results) => {
+        console.log("Clothing", results)
+        console.log("Get", results[0].clothings)
+    })
+        
     })
     })
         res.render('outfits', {
