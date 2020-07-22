@@ -64,9 +64,24 @@
               </div>
               <div class="container">
                 You don't have any outfits yet! Let's make one.
-                  <% for (i=0; i<outfits.length; i++) {%>
-                      <img src=<%=outfits[i]%>>
+                <div class="tile is-ancestor">
+                <% for (i=0; i<outfits.length; i++) {%>
+                  <div class="box">
+                    <% for (i=0; i<outfitImgs.length; i++) {%>
+                      <figure class="image is-4by5">
+                        <img src=<%=outfitImgs[i]%>>
+                    </figure> <p>test</p>
+
+
+
+                      
                   <%}%>
+
+                  </div>
+              <%}%>
+
+                  
+                </div>
               </div>
         </section>
         <%- include ('partials/footer.ejs') %> 
