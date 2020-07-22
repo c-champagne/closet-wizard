@@ -34,7 +34,7 @@
                             </div>
                             <div class="media-right">
                               <label class="checkbox">
-                                  <input type="checkbox" id=<%= clothing[i].name %> name="clothes" value=<%= clothing[i].name%>>
+                                  <input type="checkbox" id=<%= clothing[i].name %> name="clothes" value=<%= clothing[i].id%>>
                                   Pick
                               </label>
                             </div>
@@ -64,7 +64,9 @@
               </div>
               <div class="container">
                 You don't have any outfits yet! Let's make one.
-              
+                  <% for (i=0; i<outfits.length; i++) {%>
+                      <p><%=outfits[i]%></p>
+                  <%}%>
               </div>
         </section>
         <%- include ('partials/footer.ejs') %> 
