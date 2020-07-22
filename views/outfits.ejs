@@ -15,30 +15,96 @@
                 <div class="modal-content">
                     <div class="box">
                   <form action="/submitOutfit" method="POST">
-                    <h2>Tops</h2>
+                    <h2>Tops and Full Body Clothing</h2>
                     <% for (i=0; i<clothing.length; i++) {%>
-                        <article class="media">
-                            <figure class="media-left">
-                              <p class="image is-64x64">
-                                <img src=<%= clothing[i].image %> alt="clothing">
+                      <% if (clothing[i].type === "top" || clothing[i].type === "full") {%>
+                        <br>
+                        <article class="media mb-6">
+                          <figure class="media-left">
+                            <p class="image is-64x64">
+                              <img src=<%= clothing[i].image %> alt="clothing">
+                            </p>
+                          </figure>
+                          <div class="media-content">
+                            <div class="content">
+                              <p>
+                                <strong><%= clothing[i].name %></strong>
+                                <br>
+                                <%= clothing[i].type %>
                               </p>
-                            </figure>
-                            <div class="media-content">
-                              <div class="content">
-                                <p>
-                                  <strong><%= clothing[i].name %></strong>
-                                  <br>
-                                  <%= clothing[i].type %>
-                                </p>
-                              </div>
                             </div>
-                            <div class="media-right">
-                              <label class="checkbox">
-                                  <input type="checkbox" id=<%= clothing[i].name %> name="clothes" value=<%= clothing[i].id%>>
-                                  Pick
-                              </label>
+                          </div>
+                          <div class="media-right">
+                            <input type="radio" id="topFull" name="topFull" value=<%= clothing[i].image %>>
+                            <label for="topFull">Pick</label>
+                          </div>
+                        </article>
+                      
+                      <%} else { %> <p></p> <% } %>
+                      <%}%>
+                      
+                      
+                      
+                      <h2>Bottoms</h2>
+                      <% for (i=0; i<clothing.length; i++) {%>
+                      <% if (clothing[i].type === "bottom"){ %> 
+                        <br>
+                        <article class="media mb-6">
+                          <figure class="media-left">
+                            <p class="image is-64x64">
+                              <img src=<%= clothing[i].image %> alt="clothing">
+                            </p>
+                          </figure>
+                          <div class="media-content">
+                            <div class="content">
+                              <p>
+                                <strong><%= clothing[i].name %></strong>
+                                <br>
+                                <%= clothing[i].type %>
+                              </p>
                             </div>
-                          </article>
+                          </div>
+                          <div class="media-right">
+                            <input type="radio" id="bottom" name="bottom" value=<%= clothing[i].image %>>
+                            <label for="bottom">Pick</label>
+                          </div>
+                        </article>
+                       
+                      <% } else { %> <p></p> <% } %>
+                      
+                      
+                        
+                      <%}%>
+                      
+                      <h2>Shoes</h2>
+                      <% for (i=0; i<clothing.length; i++) {%>
+                      <% if (clothing[i].type === "shoes"){ %>
+                        <br>
+                        <article class="media mb-6">
+                          <figure class="media-left">
+                            <p class="image is-64x64">
+                              <img src=<%= clothing[i].image %> alt="clothing">
+                            </p>
+                          </figure>
+                          <div class="media-content">
+                            <div class="content">
+                              <p>
+                                <strong><%= clothing[i].name %></strong>
+                                <br>
+                                <%= clothing[i].type %>
+                              </p>
+                            </div>
+                          </div>
+                          <div class="media-right">
+                            <input type="radio" id="shoes" name="shoes" value=<%= clothing[i].image %>>
+                            <label for="shoes">Pick</label>
+                          </div>
+                        </article>
+ 
+                      <% } else { %> <p></p> <% } %>
+                      
+                      
+                        
                     <%}%>
                     <div class="field">
                         <label class="label">Outfit Name</label>
@@ -64,7 +130,46 @@
               </div>
               <div class="container">
                 You don't have any outfits yet! Let's make one.
-                
+                <div class="tile is-ancestor">
+                  <% for (i=0; i<outfits.length; i++) {%>
+                    <div class="tile is-parent">
+                      <div class="tile is-child box">
+                              <div class="content">
+                                <% if (outfits[i].top === null) {%>
+                                  <span></span>
+                                  <%} else { %>
+                                  <figure class="image is-128x128">
+                                      <img src=<%=outfits[i].top%> alt="top">
+                                  </figure>
+                                  <% } %>
+                                  <% if (outfits[i].bottom === null) {%>
+                                    <span></span>
+                                  <%} else { %>
+                                  <figure class="image is-128x128">
+                                    <img src=<%=outfits[i].bottom%> alt="bottom">
+                                </figure>
+                              <% } %>
+                              <% if (outfits[i].shoes === null) {%>
+                                <span></span>
+                                <%} else { %>
+                                <figure class="image is-128x128">
+                                  <img src=<%=outfits[i].shoes%> alt="shoes">
+                              </figure>
+                              <% } %>
+                              </div>
+                              <div class="content">
+                                  <p class="title"><%= outfits[i].name %></p>
+                                  <!-- <div class="content">
+                                      <p class="subtitle">Colors:</p>
+                                          <span>Colors here</span>
+                                      <p class="subtitle">Style</p>
+                                          <span>Style here</span>
+                                  </div> -->
+                              </div>
+                      </div>
+                  </div> 
+                  <%}%>
+                </div>
               </div>
         </section>
         <%- include ('partials/footer.ejs') %> 
