@@ -269,27 +269,6 @@ app.get('/closet/clothes', function (req, res) {
 }) */
 
 app.get('/closet/outfits', function (req, res) {
-    /* db.outfit.findAll({
-        include: [{
-            model: db.clothing,
-            attributes: ['name', 'image'],
-            where: {user_id: [req.user.id]}
-        }]
-    })
-   .then((results) => {
-       for(i=0; i < results.length; i++) {
-           results[i].clothings.forEach(element => renderImages.push(element.image))
-       }
-   console.log("What is this", renderImages)
-})
-   res.render('outfits', {
-       name: req.user.firstName,
-       clothing: userClothes,
-       outfits: renderImages
-   })  */
-   
-
-
      db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
