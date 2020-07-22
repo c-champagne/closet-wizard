@@ -269,66 +269,55 @@ app.get('/closet/clothes', function (req, res) {
 }) */
 
 app.get('/closet/outfits', function (req, res) {
-    let renderImages = ["cat", "dog"];
-    db.clothing.findAll({
+    /* db.outfit.findAll({
+        include: [{
+            model: db.clothing,
+            attributes: ['name', 'image'],
+            where: {user_id: [req.user.id]}
+        }]
+    })
+   .then((results) => {
+       for(i=0; i < results.length; i++) {
+           results[i].clothings.forEach(element => renderImages.push(element.image))
+       }
+   console.log("What is this", renderImages)
+})
+   res.render('outfits', {
+       name: req.user.firstName,
+       clothing: userClothes,
+       outfits: renderImages
+   })  */
+   
+
+
+     db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
     .then((results) => {
         let userClothes = results;
-    db.outfit.findAll({
-        raw: true,
-        where: {user_id: [req.user.id]}
-    })
-    .then((results) => { 
-        let userOutfits = [];
-        /* console.log("OF IDs are", userOutfits) */
-        /* let outfitImages = results.image */
-        for (i=0; i < results.length; i++) {
-            userOutfits.push(results[i].id)
-        }
-       /*  console.log("OF IDs", userOutfits)  */
-        db.clothingOutfit.findAll({
-            raw: true,
-            where: {
-                outfit_id: {
-                    [Sequelize.Op.in]: userOutfits
-                }
-            }
-        })
-    .then((results) => {
-         /* console.log("Joins:", results)  */
+        let renderImages = [];
          db.outfit.findAll({
              include: [{
                  model: db.clothing,
                  attributes: ['name', 'image'],
                  where: {user_id: [req.user.id]}
-                 /* through: {
-                     where: {clothing_id: 8}
-                 } */
              }]
          })
-         
         .then((results) => {
-      /*   console.log("All Outfits", results) // this returns ALL of the user's outfits
-        console.log("First Outfit Pieces", results[0].clothings) // this returns all of the data for ALL of the outfit's pieces
-        console.log("First Clothing Piece", results[0].clothings[0])  //this returns all of the data for the piece of clothing
-        console.log("WHAT I WANT", results[0].clothings[0].image) //this returns the clothing piece's image link */
-        /* let renderImages = []; */
             for(i=0; i < results.length; i++) {
                 results[i].clothings.forEach(element => renderImages.push(element.image))
             }
+            res.render('outfits', {
+                name: req.user.firstName,
+                clothing: userClothes,
+                outfits: renderImages
+            }) 
         console.log("What is this", renderImages)
+        console.log("CO", results[0].clothings[0])
     })
-        
-    })
-    })
-        res.render('outfits', {
-            name: req.user.firstName,
-            clothing: userClothes,
-            outfits: renderImages
         }) 
-        })
-})
+    }) 
+
 
 app.listen(process.env.PORT, function(){
     console.log(`Listening on ${process.env.PORT}..`)
