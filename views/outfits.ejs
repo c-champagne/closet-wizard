@@ -130,9 +130,46 @@
               </div>
               <div class="container">
                 You don't have any outfits yet! Let's make one.
+                <div class="tile is-ancestor">
                   <% for (i=0; i<outfits.length; i++) {%>
-                      <img src=<%=outfits[i]%>>
+                    <div class="tile is-parent">
+                      <div class="tile is-child box">
+                              <div class="content">
+                                <% if (outfits[i].top === null) {%>
+                                  <span></span>
+                                  <%} else { %>
+                                  <figure class="image is-128x128">
+                                      <img src=<%=outfits[i].top%> alt="top">
+                                  </figure>
+                                  <% } %>
+                                  <% if (outfits[i].bottom === null) {%>
+                                    <span></span>
+                                  <%} else { %>
+                                  <figure class="image is-128x128">
+                                    <img src=<%=outfits[i].bottom%> alt="bottom">
+                                </figure>
+                              <% } %>
+                              <% if (outfits[i].shoes === null) {%>
+                                <span></span>
+                                <%} else { %>
+                                <figure class="image is-128x128">
+                                  <img src=<%=outfits[i].shoes%> alt="shoes">
+                              </figure>
+                              <% } %>
+                              </div>
+                              <div class="content">
+                                  <p class="title"><%= outfits[i].name %></p>
+                                  <!-- <div class="content">
+                                      <p class="subtitle">Colors:</p>
+                                          <span>Colors here</span>
+                                      <p class="subtitle">Style</p>
+                                          <span>Style here</span>
+                                  </div> -->
+                              </div>
+                      </div>
+                  </div> 
                   <%}%>
+                </div>
               </div>
         </section>
         <%- include ('partials/footer.ejs') %> 

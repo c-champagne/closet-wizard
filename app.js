@@ -182,16 +182,18 @@ app.post('/submitOutfit', function (req, res) {
    /*  console.log('submitted')
     console.log(req.body)
     console.log("Here is " + res) */
-    console.log("submit", req.body.clothes)
-    let outfitName = (req.body.outfitName)
-    let clothes = (req.body.clothes)
-    db.outfit.create({name:outfitName, user_id:req.user.id})
-    .then((results) => {
+    console.log("submit", req.body);
+    let outfitName = (req.body.outfitName);
+    let outfitTop = (req.body.topFull);
+    let outfitBottom = (req.body.bottom);
+    let outfitShoes = (req.body.shoes);
+    db.outfit.create({name:outfitName, user_id:req.user.id, top:outfitTop, bottom:outfitBottom, shoes:outfitShoes})
+    /* .then((results) => {
         console.log((results))
          for (i=0; i<clothes.length; i++) {
             db.clothingOutfit.create({clothing_id:clothes[i], outfit_id: results.id})
         }       
-    })
+    }) */
     .then(() => res.redirect("/closet/outfits"))
     
 })
@@ -276,23 +278,29 @@ app.get('/closet/outfits', function (req, res) {
         let userClothes = results;
         let renderImages = [];
          db.outfit.findAll({
-             include: [{
+             
+             /* include: [{
                  model: db.clothing,
                  attributes: ['name', 'image'],
                  where: {user_id: [req.user.id]}
-             }]
+             }] */
+             where: {user_id: [req.user.id]}
          })
-        .then((results) => {
+         .then((results) => {
+             let userOutfits = results;
+             res.render('outfits', {
+                name: req.user.firstName,
+                clothing: userClothes,
+                outfits: userOutfits
+         })
+        /* .then((results) => {
             for(i=0; i < results.length; i++) {
                 results[i].clothings.forEach(element => renderImages.push(element.image))
             }
-            res.render('outfits', {
-                name: req.user.firstName,
-                clothing: userClothes,
-                outfits: renderImages
-            }) 
-        console.log("What is this", renderImages)
-        console.log("CO", results[0].clothings[0])
+            
+            }) */ 
+        /* console.log("What is this", renderImages)
+        console.log("CO", results[0].clothings[0]) */
     })
         }) 
     }) 
