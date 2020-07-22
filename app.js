@@ -131,20 +131,17 @@ app.get('/closet', checkAuthenticated, function(req, res) {
             where: {user_id: [req.user.id]}
         })
         .then((results) => {
-            /* console.log(results) */
             let i;
             let allImg = [];
             let userClothes = results;
             for (i = 0; i< results.length; i++) {
                 allImg.push(results[i].image)
             }
-            /* console.log(allImg) */
             res.render('closet', {
                 name: req.user.firstName,
                 title: "Clothes",
                 imgOne: allImg,
                 clothing: userClothes
-                /* userClothing: "test" */
             })
         })
     }
@@ -156,7 +153,6 @@ app.get('/newUser', checkAuthenticated, function(req, res) {
 })
 
 app.post('/submitUser', function (req, res) {
-   /*  console.log(req.body.newName) */
     let name = (req.body.newName)
     db.user.update(
         {firstName: name},
@@ -166,34 +162,21 @@ app.post('/submitUser', function (req, res) {
 })
 
 app.post('/submitImage', function (req, res) {
-    /* console.log('submitted')
-    console.log(req.body)
-    console.log("Here is " + res) */
     let clothingName = (req.body.clothingName)
     let clType = (req.body.clType)
     let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
     db.clothing.create({name:clothingName, type:clType, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
-    /* console.log("Item handle is " + itemHandle) */
     
 })
 
 app.post('/submitOutfit', function (req, res) {
-   /*  console.log('submitted')
-    console.log(req.body)
-    console.log("Here is " + res) */
     console.log("submit", req.body);
     let outfitName = (req.body.outfitName);
     let outfitTop = (req.body.topFull);
     let outfitBottom = (req.body.bottom);
     let outfitShoes = (req.body.shoes);
     db.outfit.create({name:outfitName, user_id:req.user.id, top:outfitTop, bottom:outfitBottom, shoes:outfitShoes})
-    /* .then((results) => {
-        console.log((results))
-         for (i=0; i<clothes.length; i++) {
-            db.clothingOutfit.create({clothing_id:clothes[i], outfit_id: results.id})
-        }       
-    }) */
     .then(() => res.redirect("/closet/outfits"))
     
 })
@@ -214,76 +197,14 @@ app.get('/closet/clothes', function (req, res) {
     
 })
 
-/* app.get('/closet/outfits', function (req, res) {
-    db.clothing.findAll({
-        where: {user_id: [req.user.id]}
-    })
-    .then((results) => {
-        let userClothes = results;
-        db.outfit.findAll({
-            raw: true,
-            where: {user_id: [req.user.id]}
-        })
-        console.log("Outfits:", results.id) 
-        let userOutfits = [];
-        for (i=0; i < results.length; i++) {
-            userOutfits.push(results[i].id)
-        }
-        console.log("IDs", userOutfits) 
-        db.clothingOutfit.findAll({
-            raw: true,
-            where: {
-                outfit_id: {
-                    [Sequelize.Op.in]: userOutfits
-                }
-            }
-        })
-    .then((results) => {
-        console.log("Joins:", results) 
-        db.clothing.findAll({
-            where: {id: [results.clothing_id]}
-        })
-        res.render('outfits', {
-            name: req.user.firstName,
-            clothing: userClothes,
-            outfits:
-        }) 
-        })
-})
-}) */
-
-/* app.get('/closet/outfits', function (req, res) {
-    db.clothing.findAll({
-        where: {user_id: [req.user.id]}
-    })
-        .then((results) => {
-            let userClothes = results;
-        })
-    db.outfit.findAll({
-        where: {user_id: [req.user.id]}
-    })
-    .then((results) => {
-        res.render('outfits', {
-            name: req.user.firstName,
-            clothing: userClothes
-        })
-    })
-}) */
-
 app.get('/closet/outfits', function (req, res) {
      db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
     .then((results) => {
         let userClothes = results;
-        let renderImages = [];
          db.outfit.findAll({
-             
-             /* include: [{
-                 model: db.clothing,
-                 attributes: ['name', 'image'],
-                 where: {user_id: [req.user.id]}
-             }] */
+
              where: {user_id: [req.user.id]}
          })
          .then((results) => {
@@ -293,18 +214,9 @@ app.get('/closet/outfits', function (req, res) {
                 clothing: userClothes,
                 outfits: userOutfits
          })
-        /* .then((results) => {
-            for(i=0; i < results.length; i++) {
-                results[i].clothings.forEach(element => renderImages.push(element.image))
-            }
-            
-            }) */ 
-        /* console.log("What is this", renderImages)
-        console.log("CO", results[0].clothings[0]) */
     })
         }) 
     }) 
-
 
 app.listen(process.env.PORT, function(){
     console.log(`Listening on ${process.env.PORT}..`)
