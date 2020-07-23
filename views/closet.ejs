@@ -7,7 +7,6 @@
       <%- include('partials/header.ejs') %>
         <section>
           <div class="container">
-          <section>
             <div class="box">
               <form id="pick-form" action="/submitImage" method="POST">
                 <div class="field">
@@ -15,13 +14,15 @@
                     <button class="button" type="button" id="picker">Pick file</button>
                     <input type="hidden" id="fsHandle" name="fsHandle" value= "none">
                   </div>
+                  <br>
                   <div class="control" id="nameBox">
                     <label for="clothingName">Item name?</label>
-                    <input type="text" id="clothingName" name="clothingName" value="">
+                    <input type="text" id="clothingName" name="clothingName" value="" required>
                   </div>
+                  <br>
                   <div class="control" id="detailsBox">
                     <p>Type of clothing:</p>
-                    <input type="radio" id="clTop" name="clType" value="top">
+                    <input type="radio" id="clTop" name="clType" value="top" required>
                     <label for="clTop">Top</label><br>
                     <input type="radio" id="clBottom" name="clType" value="bottom">
                     <label for="clBottom">Bottom</label><br>
@@ -32,11 +33,10 @@
                   </div>
                 </div>
                 <div>
-                  <button class="submitButton" type="submit" formmethod="POST">Add to Closet</button>
+                  <button class="submitButton button is-danger" type="submit" formmethod="POST">Add to Closet</button>
                 </div>
               </form>
             </div>  
-          </section>
           </div>
         </section>
         <section>

@@ -4,64 +4,6 @@
     <%- include('partials/head.ejs') %> 
   </head>
   <body>
-    <!-- <nav class="navbar is-danger" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
-          <img src="/images/smallCWlogo.png">
-        </a>
-    
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-    
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item">
-            Home
-          </a>
-    
-          <a class="navbar-item">
-            Documentation
-          </a>
-    
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              More
-            </a>
-    
-            <div class="navbar-dropdown">
-              <a class="navbar-item">
-                About
-              </a>
-              <a class="navbar-item">
-                Jobs
-              </a>
-              <a class="navbar-item">
-                Contact
-              </a>
-              <hr class="navbar-divider">
-              <a class="navbar-item">
-                Report an issue
-              </a>
-            </div>
-          </div>
-        </div>
-    
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-info">
-                <strong>About</strong>
-              </a>
-              <a class="button is-link" href="/auth/google">Log-in with Google</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav> -->
       
   <section class="section">
     <div class="container has-text-centered">
@@ -76,55 +18,82 @@
     </div>
   </section>
   <section>
-    <div class="tile is-ancestor">
-      <div class="tile is-vertical is-8">
-        <div class="tile">
-          <div class="tile is-parent is-vertical">
-            <article class="tile is-child box">
-              <figure class="image is-2by1">
-                <img src="/images/phShoe.jpg"/>
-              </figure>
-              <figure class="image is-2by1">
-                <img src="/images/phShoe.jpg"/>
-              </figure>
-            </article>
-            <article class="tile is-child box">
-              <figure class="image">
-                <img src="/images/phShoe.jpg"/>
-              </figure>
-              <figure class="image">
-                <img src="/images/phShoe.jpg"/>
-              </figure>
-            </article>
+    <!-- <div class="container has-text-centered"> -->
+    <div class="columns has-text-centered">
+      <div class="column">
+        <div class="tile is-ancestor">
+        <div class="tile is-vertical is-parent">
+          <div class="tile is-child box notification is-danger">
+            <p class="title">What I do:</p>
+            <div class="content">
+              <p>I make managing your wardrobe easy by taking your images and turning them into an easy to navigate virtual closet.<br> Then I can help you combine those images into snazzy outfits.</p>
+            </div>
           </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <figure class="image is-square">
-                <img src="/images/phShirt.jpg"/>
-              </figure>
-            </article>
+          <div class="tile is-child box">
+            <p class="title"></p>
+            <figure class="image is-5by4 mx-5 my-5">
+              <img src="/images/closetFront.png">
+            </figure>
+          </div>
           </div>
         </div>
-        <div class="tile is-parent">
-          <article class="tile is-child box">
-            <figure class="image is-128x128">
-              <img src="/images/phShirt.jpg"/>
-            </figure>
-            <figure class="image is-128x128">
-              <img src="/images/phShirt.jpg"/>
-          </article>
+      </div>
+      
+     
+        <div class="column">
+          <div class="tile is-ancestor">
+          <div class="tile is-parent is is-vertical">
+            <div class="tile is-child box notification is-info">
+              <p class="title">Some ways I can help you:</p>
+              <div class="content">
+              
+                  <p>Pre-plan your outfits for the whole week.</p>
+                  <p>Save outfit ideas for special events.</p>
+                  <p>Shopping online?  Grab an item's image link and let me work my magic with it. <br><i>Let's find a shirt to go with those pants...</i></p>
+                
+            </div>
+            </div>
+            <div class="tile is-child box">
+              <p class="title"></p>
+              <figure class="image is-5by4 mx-5 my-5">
+                <img src="/images/clothingCollage.png">
+              </figure>
+            </div>
+          </div>
+          </div>
+        </div>
+        
+    <!-- <div class="tile is-ancestor">
+      <div class="tile is-4 is-vertical is-parent">
+        <div class="tile is-child box notification is-danger is-12">
+          <p class="title">What I do:</p>
+          <div class="content">
+            <p>I make managing your wardrobe easy by taking your images and turning them into an easy to navigate virtual closet.<br> Then I can help you combine those images into snazzy outfits.</p>
+          </div>
+        </div>
+        <div class="tile is-child box">
+          <p class="title"></p>
+          <figure>
+            <img src="/images/closetFront.png">
           </figure>
         </div>
       </div>
       <div class="tile is-parent">
-        <article class="tile is-child box">
-          <figure class="image is-1by3">
-            <img src="/images/phOutfit.jpg"/>
-          </figure>
-        </article>
+        <div class="tile is-child box notification is-info is-8">
+          <p class="title">Some ways I can help you:</p>
+          <div class="content">
+            <ul>
+              <li>Pre-plan your outfits for the whole week.</li>
+              <li>Save outfit ideas for special events.</li>
+              <li>Shopping online?  Grab an item's image link and let me work my magic with it. <i>Let's find a shirt to go with those pants...</i></li>
+            </ul>
+        </div>
+        </div>
       </div>
-    </div>
+    </div> -->
+  </div>
   </section>
+
   <%- include ('partials/footer.ejs') %> 
   </body>
 </html>

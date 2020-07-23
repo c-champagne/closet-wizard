@@ -7,15 +7,15 @@
       <%- include('partials/header.ejs') %>
         <section>
           <div class="container">
-            <div class="box">
-              <button id="modalBtn">Launch Outfit Creator</button>
-            </div> 
+              <div class="content">
+                <button class="button is-danger is-medium" id="modalBtn">Launch Outfit Creator</button>
+              </div>
             <div class="modal" id="outfitModal">
                 <div class="modal-background"></div>
                 <div class="modal-content">
                     <div class="box">
                   <form action="/submitOutfit" method="POST">
-                    <h2>Tops and Full Body Clothing</h2>
+                    <h1>Tops and Full Body Clothing</h1>
                     <% for (i=0; i<clothing.length; i++) {%>
                       <% if (clothing[i].type === "top" || clothing[i].type === "full") {%>
                         <br>
@@ -109,9 +109,8 @@
                     <div class="field">
                         <label class="label">Outfit Name</label>
                         <div class="control">
-                          <input class="input" type="text" id="outfitName" name="outfitName" value="">
+                          <input class="input" type="text" id="outfitName" name="outfitName" value="" required>
                         </div>
-                        <p class="help">This is a help text</p>
                         <button class="button is-primary" type="submit" formmethod="POST">Done</button>
                       </div>
                   </form>
@@ -129,12 +128,12 @@
                 </ul>
               </div>
               <div class="container">
-                You don't have any outfits yet! Let's make one.
-                <div class="tile is-ancestor">
+                  <div class="columns is-multiline">
                   <% for (i=0; i<outfits.length; i++) {%>
+                    <div class="column has-text-centered is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
                     <div class="tile is-parent">
                       <div class="tile is-child box">
-                              <div class="content">
+                              <div class="content is-inline-block">
                                 <% if (outfits[i].top === null) {%>
                                   <span></span>
                                   <%} else { %>
@@ -159,15 +158,10 @@
                               </div>
                               <div class="content">
                                   <p class="title"><%= outfits[i].name %></p>
-                                  <!-- <div class="content">
-                                      <p class="subtitle">Colors:</p>
-                                          <span>Colors here</span>
-                                      <p class="subtitle">Style</p>
-                                          <span>Style here</span>
-                                  </div> -->
                               </div>
                       </div>
                   </div> 
+                </div>
                   <%}%>
                 </div>
               </div>

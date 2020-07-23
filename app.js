@@ -28,13 +28,10 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-       // callbackURL: 'http://localhost:3000/auth/google/callback',
        callbackURL: "/auth/google/callback",
        proxy: true 
     },
     function(accessToken, refreshToken, profile, done) {
-       /* console.log(profile.emails[0].value);
-       console.log(profile.name.givenName); */
         db.user.findOrCreate({ 
             where: {email: profile.emails[0].value}})
             .then(user => {
@@ -50,13 +47,11 @@ passport.use(new GoogleStrategy({
    app.use(passport.session());
    
    passport.serializeUser((user, done) => {
-       /* console.log(user); */
        let localUser = [user]
        done(null, user[0].id);
    });
    
    passport.deserializeUser((user, done) => {
-       /* console.log('The user is ' + user); */
        db.user.findByPk(user)
        .then(function(user){
            done(null, user);
@@ -66,37 +61,6 @@ passport.use(new GoogleStrategy({
        })
    });
 //End Passport
-const client = require('filestack-js').init(process.env.FILESTACK_APIKEY);
-/* const options = {
-    maxFiles: 5,
-    uploadInBackground: false,
-    onOpen: () => console.log("opened!"),
-    onUploadDone: (res) => console.log (res.filesUploaded[0].handle),
-    onFileUploadFailed: () => console.log('failed'),}
-const picker = client.picker(options); */
-
-/* const form = document.getElementById('pick-form');
-const fileInput = document.getElementById('fileupload');
-const btn = document.getElementById('picker');
-const nameBox = document.getElementById('nameBox');
-const urlBox = document.getElementById('urlBox');
-
-btn.addEventListener('click', function (e) {
-    e.preventDefault();
-    picker.open();
-})
-
-form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    alert('Submitting' + fileInput.value);
-});
-
-function updateForm (result) {
-    const fileData = result.filesUploaded[0];
-    fileInput.value = fileData.url;
-} */
-
-
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
@@ -159,6 +123,9 @@ app.post('/submitUser', function (req, res) {
         {where: {id: req.user.id}})
      db.clothing.create({name:"placeholder", user_id:req.user.id})
         .then(() => res.redirect("/closet"))
+        .catch(e => {
+            return done(e)
+        })
 })
 
 app.post('/submitImage', function (req, res) {
@@ -167,6 +134,9 @@ app.post('/submitImage', function (req, res) {
     let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
     db.clothing.create({name:clothingName, type:clType, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
+    .catch(e => {
+        return done(e)
+    })
     
 })
 
@@ -178,10 +148,13 @@ app.post('/submitOutfit', function (req, res) {
     let outfitShoes = (req.body.shoes);
     db.outfit.create({name:outfitName, user_id:req.user.id, top:outfitTop, bottom:outfitBottom, shoes:outfitShoes})
     .then(() => res.redirect("/closet/outfits"))
+    .catch(e => {
+        return done(e)
+    })
     
 })
 
-app.get('/closet/clothes', function (req, res) {
+app.get('/closet/clothes', checkAuthenticated, function (req, res) {
     db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
@@ -194,10 +167,13 @@ app.get('/closet/clothes', function (req, res) {
             clothing: userClothes
         })
     })
+    .catch(e => {
+        return done(e)
+    })
     
 })
 
-app.get('/closet/outfits', function (req, res) {
+app.get('/closet/outfits', checkAuthenticated, function (req, res) {
      db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
@@ -215,6 +191,11 @@ app.get('/closet/outfits', function (req, res) {
                 outfits: userOutfits
          })
     })
+    .catch(e => {
+        return done(e)
+    })
+        }).catch(e => {
+            return done(e)
         }) 
     }) 
 
