@@ -154,6 +154,32 @@ app.post('/submitOutfit', function (req, res) {
     
 })
 
+app.post('/deleteItem', function (req, res) {
+    console.log("Deleted", req.body)
+    db.clothing.destroy({
+        where: {
+            id:req.body.itemID
+        }
+        })
+    .then(() => res.redirect("/closet"))
+    .catch(e => {
+        return done(e)
+    })
+})
+
+app.post('/deleteOutfit', function (req, res) {
+    console.log("Deleted", req.body)
+    db.outfit.destroy({
+        where: {
+            id:req.body.outfitID
+        }
+        })
+    .then(() => res.redirect("/closet/outfits"))
+    .catch(e => {
+        return done(e)
+    })
+})
+
 app.get('/closet/clothes', checkAuthenticated, function (req, res) {
     db.clothing.findAll({
         where: {user_id: [req.user.id]}

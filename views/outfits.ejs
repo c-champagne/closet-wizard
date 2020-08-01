@@ -158,6 +158,10 @@
                               </div>
                               <div class="content">
                                   <p class="title"><%= outfits[i].name %></p>
+                                  <form action="/deleteOutfit" method="POST">
+                                    <input type="hidden" id="outfitID" name="outfitID" value=<%=outfits[i].id%>>
+                                    <button class="button is-small is-danger is-outline" type="submit">Delete</button>
+                                </form>
                               </div>
                       </div>
                   </div> 
