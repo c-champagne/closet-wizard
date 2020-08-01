@@ -27,6 +27,10 @@
                                                 <span class="tag">Colors here</span>
                                             <p class="subtitle">Style</p>
                                                 <span class="tag">Style here</span> -->
+                                                <form action="/deleteItem" method="POST">
+                                                    <input type="hidden" id="itemID" name="itemID" value=<%=clothing[i].id%>>
+                                                    <button class="button is-small is-danger is-outline" type="submit">Delete</button>
+                                                </form>
                                         </div>
                                     </div>
                                 </div>
