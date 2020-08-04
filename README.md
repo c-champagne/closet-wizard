@@ -17,10 +17,10 @@ Users can upload images using the Clothing Upload Form at the top of the closet 
 To create an outfit, users can click on the Launch Outfit Creator button and the Outfit Creation Form will display in a modal. All of the user's uploaded images will be listed and sorted by type of clothing.  Users can select one top/full body item, one bottom item, and one pair of shoes.  Once the user names the outfit and submits the form, this data is stored in the outfits table of the database.
 
 ## Future Features
-Deleting items/outfits
-Favoriting outfits
-Random outfit suggestion
-Adding tags to clothing items based on color, style, or season
+* ~~Deleting items/outfits~~ - Available as of 8/3/20
+* Favoriting outfits
+* Random outfit suggestion
+* Adding tags to clothing items based on color, style, or season
 
 ## Hurdles
 Learning how to implement Filestack and getting it to work in a way that passed the file handle to the form without any input from the user was one of the early hurdles.
