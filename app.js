@@ -129,10 +129,12 @@ app.post('/submitUser', function (req, res) {
 })
 
 app.post('/submitImage', function (req, res) {
+    console.log("Form data is", req.body)
     let clothingName = (req.body.clothingName)
     let clType = (req.body.clType)
+    let clColor = (req.body.clColor)
     let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
-    db.clothing.create({name:clothingName, type:clType, image:itemHandle, user_id:req.user.id})
+    db.clothing.create({name:clothingName, type:clType, colors:clColor, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
     .catch(e => {
         return done(e)

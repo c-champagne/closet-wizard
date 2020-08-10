@@ -14,6 +14,7 @@
                     <button class="button" type="button" id="picker">Pick file</button>
                     <input type="hidden" id="fsHandle" name="fsHandle" value= "none">
                   </div>
+                  <div id="thumbnail-container"></div>
                   <br>
                   <div class="control" id="nameBox">
                     <label for="clothingName">Item name?</label>
@@ -22,14 +23,35 @@
                   <br>
                   <div class="control" id="detailsBox">
                     <p>Type of clothing:</p>
-                    <input type="radio" id="clTop" name="clType" value="top" required>
-                    <label for="clTop">Top</label><br>
-                    <input type="radio" id="clBottom" name="clType" value="bottom">
-                    <label for="clBottom">Bottom</label><br>
-                    <input type="radio" id="clFull" name="clType" value="full">
-                    <label for="clFull">Full body</label><br>
-                    <input type="radio" id="clShoes" name="clType" value="shoes">
-                    <label for="clShoes">Shoes</label><br>
+                      <input type="radio" id="clTop" name="clType" value="top" required>
+                      <label for="clTop">Top</label><br>
+                      <input type="radio" id="clBottom" name="clType" value="bottom">
+                      <label for="clBottom">Bottom</label><br>
+                      <input type="radio" id="clFull" name="clType" value="full">
+                      <label for="clFull">Full body</label><br>
+                      <input type="radio" id="clShoes" name="clType" value="shoes">
+                      <label for="clShoes">Shoes</label><br>
+                    <p>Primary Color:</p>
+                      <input type="radio" id="red" name="clColor" value="red">
+                      <label for="red">Red</label>
+                      <input type="radio" id="orange" name="clColor" value="orange">
+                      <label for="orange">Orange</label><br>
+                      <input type="radio" id="yellow" name="clColor" value="yellow">
+                      <label for="yellow">Yellow</label>
+                      <input type="radio" id="green" name="clColor" value="green">
+                      <label for="green">Green</label><br>
+                      <input type="radio" id="blue" name="clColor" value="blue">
+                      <label for="blue">Blue</label>
+                      <input type="radio" id="purple" name="clColor" value="purple">
+                      <label for="purple">Purple</label><br>
+                      <input type="radio" id="black" name="clColor" value="black">
+                      <label for="black">Black</label>
+                      <input type="radio" id="gray" name="clColor" value="gray">
+                      <label for="gray">Gray</label><br>
+                      <input type="radio" id="brown" name="clColor" value="brown">
+                      <label for="brown">Brown</label>
+                      <input type="radio" id="multi" name="clColor" value="multi">
+                      <label for="multi">Multicolored</label><br>
                   </div>
                 </div>
                 <div>
@@ -74,6 +96,7 @@
           console.log ("This is" + newImage)
           fileInput.value = newImage
           console.log ("Value is now " + fileInput.value)
+          imgPreview();
           /* updateForm(); */
         }
         
@@ -107,6 +130,18 @@ btn.addEventListener('click', function (e) {
   const fileData = result.filesUploaded[0];
   fileInput.value = fileData.url;
   console.log("Update form says " + fileData)
+ }
+
+ function imgPreview() {
+    const container = document.getElementById('thumbnail-container');
+    const thumbnail = document.getElementById('thumbnail') || new Image();
+    thumbnail.id = 'thumbnail';
+    thumbnail.classList = 'image is-128x128';
+    thumbnail.src = 'https://www.filestackapi.com/api/file/' + newImage;
+
+    if (!container.contains(thumbnail)) {
+      container.appendChild(thumbnail);
+    }
 } 
 
 
