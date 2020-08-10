@@ -20,7 +20,11 @@ To create an outfit, users can click on the Launch Outfit Creator button and the
 * ~~Deleting items/outfits~~ - Available as of 8/3/20
 * Favoriting outfits
 * Random outfit suggestion
-* Adding tags to clothing items based on color, style, or season
+* ~~Image Upload Preview in form~~ - Available as of 8/9/20
+* Adding tags:
+    - ~~Color~~ - Available as of 8/9/20
+    - Style
+    - Season
 
 ## Hurdles
 Learning how to implement Filestack and getting it to work in a way that passed the file handle to the form without any input from the user was one of the early hurdles.
