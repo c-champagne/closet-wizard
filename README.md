@@ -1,5 +1,6 @@
 # closet-wizard
 
+![Hello from Closet Wizard](./public/images/peekingWizardtext.png)
 ## Intro
 This app makes it easier for you to start your day by putting your entire closet at your fingertips. With just a few clicks, you can figure out what to wear before you even get out of bed. 
 
@@ -8,7 +9,7 @@ You can also use the outfit creation feature to pre-plan outfits for the week or
 ## Built With
 Closet Wizard was built with Node.js and Express. It utilizes EJS for HTML rendering and Bulma for CSS.
 
-
+![Demo Closet](./public/images/closet.png)![Demo Closet Outfits](./public/images/closet2.png)
 ## How it Works
 Users can log-in via Google, which was made possible through the use of Passport.js.  Users must be logged in to access the closet page or they will be redirected to the index. Once a user has logged-in, their email is stored in the users table of the database and they are assigned a unique user ID. If this is a user's first time logging-in, they will be redirected to the "New User" page and asked to enter a display name.
 
