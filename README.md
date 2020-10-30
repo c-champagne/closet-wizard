@@ -7,7 +7,7 @@ This app makes it easier for you to start your day by putting your entire closet
 You can also use the outfit creation feature to pre-plan outfits for the week or special occasions. You can also save images from online stores to help you visualize how that new shirt might work with your existing wardrobe.
 
 ## Built With
-Closet Wizard was built with Node.js and Express. It utilizes EJS for HTML rendering and Bulma for CSS.
+Closet Wizard was built with Node.js, Express, and PostgreSQL. It utilizes EJS for HTML rendering and Bulma for CSS.  Image uploading and hosting is handled by [Filestack](https://www.filestack.com/docs/).
 
 ![Demo Closet](./public/images/closet.png)![Demo Closet Outfits](./public/images/closet2.png)
 ## How it Works
