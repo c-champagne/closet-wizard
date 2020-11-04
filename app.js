@@ -70,6 +70,9 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
     res.render('index.ejs')
 })
+app.get('/error', (req, res) => {
+    res.render('error.ejs')
+})
 
 //***********Google log-in routes***********
 app.get('/auth/google', passport.authenticate('google', {
@@ -107,8 +110,8 @@ app.get('/closet', checkAuthenticated, function(req, res, next) {
                 clothing: userClothes
             })
         })
-        .catch(e => {
-            return next(e)
+        .catch(() => {
+            return res.redirect("/error")
         })
     }
 })
@@ -125,8 +128,8 @@ app.post('/submitUser', function (req, res, next) {
         {where: {id: req.user.id}})
      db.clothing.create({name:"placeholder", user_id:req.user.id})
         .then(() => res.redirect("/closet"))
-        .catch(e => {
-            return next(e)
+        .catch(() => {
+            return res.redirect("/error")
         })
 })
 
@@ -138,8 +141,8 @@ app.post('/submitImage', function (req, res, next) {
     let itemHandle = 'https://www.filestackapi.com/api/file/' + (req.body.fsHandle)
     db.clothing.create({name:clothingName, type:clType, colors:clColor, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
-    .catch(e => {
-        return next(e)
+    .catch(() => {
+        return res.redirect("/error")
     })
     
 })
@@ -152,8 +155,8 @@ app.post('/submitOutfit', function (req, res, next) {
     let outfitShoes = (req.body.shoes);
     db.outfit.create({name:outfitName, user_id:req.user.id, top:outfitTop, bottom:outfitBottom, shoes:outfitShoes})
     .then(() => res.redirect("/closet/outfits"))
-    .catch(e => {
-        return next(e)
+    .catch(() => {
+        return res.redirect("/error")
     })
     
 })
@@ -165,8 +168,8 @@ app.post('/deleteItem', function (req, res, next) {
         }
         })
     .then(() => res.redirect("/closet"))
-    .catch(e => {
-        return next(e)
+    .catch(() => {
+        return res.redirect("/error")
     })
 })
 
@@ -177,8 +180,8 @@ app.post('/deleteOutfit', function (req, res, next) {
         }
         })
     .then(() => res.redirect("/closet/outfits"))
-    .catch(e => {
-        return next(e)
+    .catch(() => {
+        return res.redirect("/error")
     })
 })
 
@@ -200,11 +203,11 @@ app.get('/closet/outfits', checkAuthenticated, function (req, res, next) {
                 outfits: userOutfits
          })
     })
-    .catch(e => {
-        return next(e)
+    .catch(() => {
+        return res.redirect("/error")
     })
-        }).catch(e => {
-            return next(e)
+        }).catch(() => {
+            return res.redirect("/error")
         }) 
     }) 
 
