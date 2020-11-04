@@ -1,5 +1,6 @@
 require ('dotenv').config()
 
+//Express server setup
 const express = require('express');
 const app = express();
 const session = require('express-session');
@@ -66,7 +67,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.render('index.ejs')
 })
 
@@ -81,13 +82,11 @@ app.get('/auth/google', passport.authenticate('google', {
 app.get('/auth/google/callback', 
 passport.authenticate('google', {failureRedirect: '/'}),
     (req, res) => {
-        console.log("This is the callback " + req.user.id)
         return res.redirect("/closet")}
 )
 //***********end Google routes***********
 
-app.get('/closet', checkAuthenticated, function(req, res) {
-    console.log("In closet" + req.user.firstName)
+app.get('/closet', checkAuthenticated, function(req, res, next) {
     if (req.user.firstName === null) {
         res.render('newUser')
     } else {
@@ -98,7 +97,7 @@ app.get('/closet', checkAuthenticated, function(req, res) {
             let i;
             let allImg = [];
             let userClothes = results;
-            for (i = 0; i< results.length; i++) {
+            for (i = 0; i < results.length; i++) {
                 allImg.push(results[i].image)
             }
             res.render('closet', {
@@ -108,15 +107,18 @@ app.get('/closet', checkAuthenticated, function(req, res) {
                 clothing: userClothes
             })
         })
+        .catch(e => {
+            return next(e)
+        })
     }
 })
 
+//this page is only visted when the user is signing in for the first time and will be asked to enter a preferred name.
 app.get('/newUser', checkAuthenticated, function(req, res) {
-    res.render('newUser', {
-    })
+    res.render('newUser')
 })
 
-app.post('/submitUser', function (req, res) {
+app.post('/submitUser', function (req, res, next) {
     let name = (req.body.newName)
     db.user.update(
         {firstName: name},
@@ -124,12 +126,12 @@ app.post('/submitUser', function (req, res) {
      db.clothing.create({name:"placeholder", user_id:req.user.id})
         .then(() => res.redirect("/closet"))
         .catch(e => {
-            return done(e)
+            return next(e)
         })
 })
 
-app.post('/submitImage', function (req, res) {
-    console.log("Form data is", req.body)
+//Defining the submitted clothing item and storing it in the clothing table of the db.
+app.post('/submitImage', function (req, res, next) {
     let clothingName = (req.body.clothingName)
     let clType = (req.body.clType)
     let clColor = (req.body.clColor)
@@ -137,13 +139,13 @@ app.post('/submitImage', function (req, res) {
     db.clothing.create({name:clothingName, type:clType, colors:clColor, image:itemHandle, user_id:req.user.id})
     .then(() => res.redirect("/closet"))
     .catch(e => {
-        return done(e)
+        return next(e)
     })
     
 })
 
-app.post('/submitOutfit', function (req, res) {
-    console.log("submit", req.body);
+//Defining the submitted outfit and storing it in the outfit table of the db.
+app.post('/submitOutfit', function (req, res, next) {
     let outfitName = (req.body.outfitName);
     let outfitTop = (req.body.topFull);
     let outfitBottom = (req.body.bottom);
@@ -151,13 +153,12 @@ app.post('/submitOutfit', function (req, res) {
     db.outfit.create({name:outfitName, user_id:req.user.id, top:outfitTop, bottom:outfitBottom, shoes:outfitShoes})
     .then(() => res.redirect("/closet/outfits"))
     .catch(e => {
-        return done(e)
+        return next(e)
     })
     
 })
 
-app.post('/deleteItem', function (req, res) {
-    console.log("Deleted", req.body)
+app.post('/deleteItem', function (req, res, next) {
     db.clothing.destroy({
         where: {
             id:req.body.itemID
@@ -165,12 +166,11 @@ app.post('/deleteItem', function (req, res) {
         })
     .then(() => res.redirect("/closet"))
     .catch(e => {
-        return done(e)
+        return next(e)
     })
 })
 
-app.post('/deleteOutfit', function (req, res) {
-    console.log("Deleted", req.body)
+app.post('/deleteOutfit', function (req, res, next) {
     db.outfit.destroy({
         where: {
             id:req.body.outfitID
@@ -178,30 +178,11 @@ app.post('/deleteOutfit', function (req, res) {
         })
     .then(() => res.redirect("/closet/outfits"))
     .catch(e => {
-        return done(e)
+        return next(e)
     })
 })
 
-app.get('/closet/clothes', checkAuthenticated, function (req, res) {
-    db.clothing.findAll({
-        where: {user_id: [req.user.id]}
-    })
-    .then((results) => {
-        let userClothes = results;
-        res.render('closet', {
-            name: req.user.firstName,
-            title: "Clothes",
-            imgOne: allImg,
-            clothing: userClothes
-        })
-    })
-    .catch(e => {
-        return done(e)
-    })
-    
-})
-
-app.get('/closet/outfits', checkAuthenticated, function (req, res) {
+app.get('/closet/outfits', checkAuthenticated, function (req, res, next) {
      db.clothing.findAll({
         where: {user_id: [req.user.id]}
     })
@@ -220,10 +201,10 @@ app.get('/closet/outfits', checkAuthenticated, function (req, res) {
          })
     })
     .catch(e => {
-        return done(e)
+        return next(e)
     })
         }).catch(e => {
-            return done(e)
+            return next(e)
         }) 
     }) 
 
@@ -233,19 +214,8 @@ app.listen(process.env.PORT, function(){
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        console.log("Yes, checkAuthenticated")
         return next()
     }
-    console.log("No, checkAuthenticated")
     res.redirect('/')
-}
-
-function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        console.log("Yes, checkNotAuth")
-       return res.redirect('/closet')
-    }
-    console.log("No, checkNotAuth")
-    next()
 }
 
