@@ -32,26 +32,21 @@
                       <input type="radio" id="clShoes" name="clType" value="shoes">
                       <label for="clShoes">Shoes</label><br>
                     <p>Primary Color:</p>
-                      <input type="radio" id="red" name="clColor" value="red">
-                      <label for="red">Red</label>
-                      <input type="radio" id="orange" name="clColor" value="orange">
-                      <label for="orange">Orange</label><br>
-                      <input type="radio" id="yellow" name="clColor" value="yellow">
-                      <label for="yellow">Yellow</label>
-                      <input type="radio" id="green" name="clColor" value="green">
-                      <label for="green">Green</label><br>
-                      <input type="radio" id="blue" name="clColor" value="blue">
-                      <label for="blue">Blue</label>
-                      <input type="radio" id="purple" name="clColor" value="purple">
-                      <label for="purple">Purple</label><br>
-                      <input type="radio" id="black" name="clColor" value="black">
-                      <label for="black">Black</label>
-                      <input type="radio" id="gray" name="clColor" value="gray">
-                      <label for="gray">Gray</label><br>
-                      <input type="radio" id="brown" name="clColor" value="brown">
-                      <label for="brown">Brown</label>
-                      <input type="radio" id="multi" name="clColor" value="multi">
-                      <label for="multi">Multicolored</label><br>
+                      <div class="select">
+                        <select name="clColor">
+                          <option value="red">Red</option>
+                          <option value="orange">Orange</option>
+                          <option value="yellow">Yellow</option>
+                          <option value="green">Green</option>
+                          <option value="blue">Blue</option>
+                          <option value="purple">Purple</option>
+                          <option value="black">Black</option>
+                          <option value="brown">Brown</option>
+                          <option value="gray">Gray</option>
+                          <option value="white">White</option>
+                          <option value="multicolored">Multicolored</option>
+                        </select>
+                      </div>
                   </div>
                 </div>
                 <div>
@@ -73,16 +68,6 @@
               </div>
         </section>
         <%- include ('partials/footer.ejs') %> 
-
-
-
-
-
-
-
-
-
-
 
         <script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>
         <script>
