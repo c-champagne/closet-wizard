@@ -1,44 +1,30 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Closet Wizard</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-        <link rel="stylesheet" href="/public/styles/style.css">
-      </head>
-    <body>
-        <section>
-                    <div class="columns is-multiline">
-                <% for (i=0; i<clothing.length; i++) {%>
-                                <div class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by5">
-                                            <img src=<%= clothing[i].image %> alt="clothing">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <p class="title"><%= clothing[i].name %></p>
-                                        <div class="content">
-                                            <!-- <p class="subtitle">Type</p> -->
-                                                <span class="tag is-info"><%= clothing[i].type %></span>
-                                                <span class="tag is-light"><%= clothing[i].colors %></span>
-                                            <!-- <p class="subtitle">Colors</p>
-                                                <span class="tag">Colors here</span>
-                                            <p class="subtitle">Style</p>
-                                                <span class="tag">Style here</span> -->
-                                                <form action="/deleteItem" method="POST">
-                                                    <input type="hidden" id="itemID" name="itemID" value=<%=clothing[i].id%>>
-                                                    <button class="button is-small is-danger is-outline" type="submit">Delete</button>
-                                                </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                <%}%>
+<div class="container">
+    <section>
+        <div class="columns is-multiline">
+            <% for (i=0; i<clothing.length; i++) {%>
+            <div class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by5">
+                            <img src=<%= clothing[i].image %> alt="clothing">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <p class="title"><%= clothing[i].name %></p>
+                        <div class="content">
+                            <span class="tag is-info"><%= clothing[i].type %></span>
+                            <span class="tag is-info is-light"><%= clothing[i].colors %></span>
+                            <hr>
+                            <form action="/deleteItem" method="POST">
+                                <input type="hidden" id="itemID" name="itemID" value=<%=clothing[i].id%>>
+                                <button class="button is-small is-danger is-outline" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
             </div> 
             </div>
         </section>
-    </body>
-</html>
+</div>

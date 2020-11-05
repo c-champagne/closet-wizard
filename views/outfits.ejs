@@ -5,7 +5,7 @@
       </head>
     <body>
       <%- include('partials/header.ejs') %>
-        <section>
+        <section class="outfitCreator">
           <div class="container">
               <div class="content">
                 <button class="button is-danger is-medium" id="modalBtn">Launch Outfit Creator</button>
@@ -110,13 +110,8 @@
               </div> 
           </div>
         </section>
-        <section>
-            <div class="tabs">
-                <ul>
-                  <li class="is-active"><a href="/closet">Clothes</a></li>
-                  <li><a href="/closet/outfits">Outfits</a></li>
-                </ul>
-              </div>
+        <section class="mainContent">
+            <%- include('partials/tabs.ejs') %>
               <div class="container">
                   <div class="columns is-multiline">
                   <% for (i=0; i<outfits.length; i++) {%>
@@ -148,6 +143,7 @@
                               </div>
                               <div class="content">
                                   <p class="title"><%= outfits[i].name %></p>
+                                  <hr>
                                   <form action="/deleteOutfit" method="POST">
                                     <input type="hidden" id="outfitID" name="outfitID" value=<%=outfits[i].id%>>
                                     <button class="button is-small is-danger is-outline" type="submit">Delete</button>
@@ -171,17 +167,6 @@
             }
             modalClose.onclick = function() {
                 modal.style.display = "none";
-            }
-
-            var tabList = document.getElementById("clothingTabs")
-            var tabs = tabList.getElementsByClassName("formTab");
-
-            for (let i =0; i <tabs.length; i++) {
-                tabs[i].addEventListener("click", function() {
-                    let current = document.getElementsByClassName("is-active");
-                    current[0].className = current[0].className.replace("is-active", "")
-                    this.className += " is-active";
-                })
             }
         </script>
       </body>
