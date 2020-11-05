@@ -1,12 +1,13 @@
 require ('dotenv').config()
 
-//Express server setup
+//Express server and database setup
 const express = require('express');
 const app = express();
 const session = require('express-session');
 const db = require('./models');
 const bodyParser = require('body-parser');
 
+//EJS Setup
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -66,7 +67,7 @@ passport.use(new GoogleStrategy({
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 
-
+//Begin Routes
 app.get('/', (req, res) => {
     res.render('index.ejs')
 })
@@ -89,6 +90,7 @@ passport.authenticate('google', {failureRedirect: '/'}),
 )
 //***********end Google routes***********
 
+//Clothing page
 app.get('/closet', checkAuthenticated, function(req, res, next) {
     if (req.user.firstName === null) {
         res.render('newUser')
@@ -97,16 +99,9 @@ app.get('/closet', checkAuthenticated, function(req, res, next) {
             where: {user_id: [req.user.id]}
         })
         .then((results) => {
-            let i;
-            let allImg = [];
             let userClothes = results;
-            for (i = 0; i < results.length; i++) {
-                allImg.push(results[i].image)
-            }
             res.render('closet', {
                 name: req.user.firstName,
-                title: "Clothes",
-                imgOne: allImg,
                 clothing: userClothes
             })
         })
@@ -116,11 +111,40 @@ app.get('/closet', checkAuthenticated, function(req, res, next) {
     }
 })
 
+
+//Outfit page
+app.get('/closet/outfits', checkAuthenticated, function (req, res, next) {
+    db.clothing.findAll({
+       where: {user_id: [req.user.id]}
+   })
+   .then((results) => {
+       let userClothes = results;
+        db.outfit.findAll({
+
+            where: {user_id: [req.user.id]}
+        })
+        .then((results) => {
+            let userOutfits = results;
+            res.render('outfits', {
+               name: req.user.firstName,
+               clothing: userClothes,
+               outfits: userOutfits
+        })
+   })
+   .catch(() => {
+       return res.redirect("/error")
+   })
+       }).catch(() => {
+           return res.redirect("/error")
+       }) 
+   }) 
+
 //this page is only visted when the user is signing in for the first time and will be asked to enter a preferred name.
 app.get('/newUser', checkAuthenticated, function(req, res) {
     res.render('newUser')
 })
 
+//create new user, create placeholder clothing item to prevent error where clothing is null
 app.post('/submitUser', function (req, res, next) {
     let name = (req.body.newName)
     db.user.update(
@@ -161,6 +185,8 @@ app.post('/submitOutfit', function (req, res, next) {
     
 })
 
+
+//Delete routes
 app.post('/deleteItem', function (req, res, next) {
     db.clothing.destroy({
         where: {
@@ -185,31 +211,7 @@ app.post('/deleteOutfit', function (req, res, next) {
     })
 })
 
-app.get('/closet/outfits', checkAuthenticated, function (req, res, next) {
-     db.clothing.findAll({
-        where: {user_id: [req.user.id]}
-    })
-    .then((results) => {
-        let userClothes = results;
-         db.outfit.findAll({
 
-             where: {user_id: [req.user.id]}
-         })
-         .then((results) => {
-             let userOutfits = results;
-             res.render('outfits', {
-                name: req.user.firstName,
-                clothing: userClothes,
-                outfits: userOutfits
-         })
-    })
-    .catch(() => {
-        return res.redirect("/error")
-    })
-        }).catch(() => {
-            return res.redirect("/error")
-        }) 
-    }) 
 
 app.listen(process.env.PORT, function(){
     console.log(`Listening on ${process.env.PORT}..`)
